@@ -6,7 +6,6 @@ import {
   Languages,
   Mail,
   MessageCircle,
-  Phone,
   Sparkles,
   Trophy,
 } from 'lucide-react'
@@ -27,17 +26,27 @@ function LinkedInIcon({ size = 16 }) {
 function App() {
   const [activeSection, setActiveSection] = useState('top')
   const [progress, setProgress] = useState(0)
+  const showBusinessImpact = false
 
   const navItems = useMemo(
-    () => [
-      { id: 'about', label: 'About' },
-      { id: 'experience', label: 'Experience' },
-      { id: 'impact', label: 'Impact' },
-      { id: 'skills', label: 'Skills' },
-      { id: 'contact', label: 'Education & Languages' },
-      { id: 'reachout', label: 'Reach Out' },
-    ],
-    [],
+    () => {
+      const items = [
+        { id: 'about', label: 'About' },
+        { id: 'experience', label: 'Experience' },
+        { id: 'impact', label: 'Impact' },
+        { id: 'skills', label: 'Skills' },
+        { id: 'professional-focus', label: 'Professional Focus' },
+        { id: 'contact', label: 'Education & Languages' },
+        { id: 'reachout', label: 'Reach Out' },
+      ]
+
+      if (showBusinessImpact) {
+        items.splice(3, 0, { id: 'business-impact', label: 'Business Impact' })
+      }
+
+      return items
+    },
+    [showBusinessImpact],
   )
 
   const linkedInUrl = 'https://www.linkedin.com/in/maryam-alsabea-74280b1a8/'
@@ -45,24 +54,36 @@ function App() {
   const languages = useMemo(
     () => [
       {
-        name: 'Arabic',
-        level: 'Native Proficiency',
-        overall: 100,
-        skills: [
-          { label: 'Reading', value: 100 },
-          { label: 'Speaking', value: 100 },
-          { label: 'Writing', value: 100 },
-        ],
+        label: 'Arabic — Native Proficiency',
       },
       {
-        name: 'English',
-        level: 'Professional Proficiency',
-        overall: 92,
-        skills: [
-          { label: 'Reading', value: 95 },
-          { label: 'Speaking', value: 90 },
-          { label: 'Writing', value: 91 },
-        ],
+        label: 'English — Full Professional Proficiency',
+      },
+    ],
+    [],
+  )
+
+  const businessImpactCards = useMemo(
+    () => [
+      {
+        title: 'SME Portfolio Growth',
+        note:
+          'Placeholder content for verified SME portfolio size, account growth, renewal outcomes, and upselling results.',
+      },
+      {
+        title: 'Sales Performance',
+        note:
+          'Placeholder content for verified sales targets, target achievement rates, rankings, and revenue contribution.',
+      },
+      {
+        title: 'Operations Leadership',
+        note:
+          'Placeholder content for verified team size, SLA gains, productivity improvements, and development outcomes.',
+      },
+      {
+        title: 'Customer Experience',
+        note:
+          'Placeholder content for verified retention, complaint resolution, escalation management, and service recovery.',
       },
     ],
     [],
@@ -110,7 +131,16 @@ function App() {
   )
 
   useEffect(() => {
-    const sectionIds = ['about', 'experience', 'impact', 'skills', 'contact', 'reachout']
+    const sectionIds = [
+      'about',
+      'experience',
+      'impact',
+      ...(showBusinessImpact ? ['business-impact'] : []),
+      'skills',
+      'professional-focus',
+      'contact',
+      'reachout',
+    ]
     const sections = sectionIds
       .map((id) => document.getElementById(id))
       .filter(Boolean)
@@ -144,7 +174,7 @@ function App() {
       observer.disconnect()
       window.removeEventListener('scroll', onScroll)
     }
-  }, [])
+  }, [showBusinessImpact])
 
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -185,12 +215,14 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <p className="kicker">Strategic Communication and Client Growth</p>
+            <p className="kicker">SME Account Management | B2B Sales | Client Growth</p>
             <h1>Maryam Sayed Husain Alawi</h1>
             <p className="lede">
-              A reliability-driven commercial and operations leader who builds trust at scale,
-              transforms customer moments into long-term partnerships, and communicates with
-              clarity under pressure.
+              Commercial and operations professional with experience across telecommunications,
+              SME account management, customer experience, and service operations. Maryam combines
+              consultative selling, relationship management, and operational leadership to
+              understand business needs, recommend suitable solutions, and build long-term client
+              partnerships.
             </p>
             <div className="hero-cta">
               <button type="button" onClick={() => scrollToSection('experience')}>
@@ -219,14 +251,16 @@ function App() {
             <h2>Professional Summary</h2>
           </div>
           <p>
-            Dynamic and results-driven professional with proven expertise across client
-            engagement, commercial account management, and service operations leadership.
-            Skilled in stakeholder communication, team development, and customer-centric
-            messaging that enhances brand trust and business outcomes.
+            Maryam has progressed from frontline customer care and service coordination into team
+            leadership and SME account management. Her experience includes managing complex
+            customer situations, leading teams of more than 30 employees, monitoring service
+            performance, developing client relationships, and supporting commercial growth.
           </p>
           <p>
-            Currently focused on integrating communication strategy, storytelling, and
-            performance management into every stage of the customer journey.
+            Currently working as an SME Account Manager at Batelco by Beyon, she focuses on
+            understanding business requirements, recommending relevant solutions, and
+            strengthening long-term partnerships through clear communication and dependable account
+            support.
           </p>
         </section>
 
@@ -273,6 +307,32 @@ function App() {
           </div>
         </section>
 
+        {showBusinessImpact && (
+          <section className="panel" id="business-impact">
+            <div className="section-title">
+              <BriefcaseBusiness size={18} />
+              <h2>Business Impact</h2>
+            </div>
+            <div className="impact-grid">
+              {businessImpactCards.map((card, index) => (
+                <motion.article
+                  key={card.title}
+                  className="impact-card"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.55, delay: index * 0.08 }}
+                >
+                  <h3>{card.title}</h3>
+                  <p>{card.note}</p>
+                  {/* TODO: Replace with Maryam's verified result */}
+                  {/* TODO: Replace with Maryam's verified result */}
+                </motion.article>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section className="panel" id="skills">
           <div className="section-title">
             <Sparkles size={18} />
@@ -280,18 +340,36 @@ function App() {
           </div>
           <div className="chips">
             {[
-              'Enterprise Solution Sales',
+              'SME Account Management',
               'Consultative Selling',
               'B2B Sales',
-              'Account Management',
-              'Customer Experience and Retention',
               'Business Development',
+              'Client Relationship Management',
+              'Customer Experience and Retention',
+              'Commercial Negotiation',
+              'Team Leadership and Coaching',
+              'KPI and SLA Management',
+              'Stakeholder Management',
+              'Escalation and Conflict Resolution',
+              'Cross-functional Collaboration',
             ].map((skill) => (
               <motion.span key={skill} whileHover={{ scale: 1.06 }}>
                 {skill}
               </motion.span>
             ))}
           </div>
+        </section>
+
+        <section className="panel" id="professional-focus">
+          <div className="section-title">
+            <Sparkles size={18} />
+            <h2>Professional Focus</h2>
+          </div>
+          <p>
+            Maryam is particularly interested in opportunities involving strategic account
+            management, B2B client growth, commercial relationship development, customer
+            experience, and customer-focused leadership.
+          </p>
         </section>
 
         <section className="panel" id="contact">
@@ -313,22 +391,8 @@ function App() {
               </div>
               <div className="language-list">
                 {languages.map((language) => (
-                  <div className="language-block" key={language.name}>
-                    <div className="language-header">
-                      <p className="language-name">{language.name}</p>
-                      <p className="language-level">{language.level}</p>
-                    </div>
-                    <div className="meter">
-                      <span style={{ width: `${language.overall}%` }} />
-                    </div>
-                    <div className="skill-rows">
-                      {language.skills.map((skill) => (
-                        <div className="skill-row" key={skill.label}>
-                          <p>{skill.label}</p>
-                          <p>{skill.value}%</p>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="language-block" key={language.label}>
+                    <p className="language-line">{language.label}</p>
                   </div>
                 ))}
               </div>
@@ -343,11 +407,6 @@ function App() {
           </div>
           <div className="reachout-grid">
             <div className="reachout-row">
-              <a className="reachout-item phone-item" href="tel:+97336880228" aria-label="Call +973 36880228">
-                <Phone size={16} />
-                <span>+973 36880228</span>
-              </a>
-
               <a className="reachout-item" href="mailto:maryamsalsabea@gmail.com">
                 <Mail size={16} />
                 Reach Out via Email
