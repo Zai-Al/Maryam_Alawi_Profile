@@ -6,6 +6,7 @@ import {
   Languages,
   Mail,
   MessageCircle,
+  Phone,
   Sparkles,
   Trophy,
 } from 'lucide-react'
@@ -407,6 +408,11 @@ function App() {
           </div>
           <div className="reachout-grid">
             <div className="reachout-row">
+              <a className="reachout-item phone-item" href="tel:+97336880228" aria-label="Call +973 36880228">
+                <Phone size={16} />
+                <span>+973 36880228</span>
+              </a>
+
               <a className="reachout-item" href="mailto:maryamsalsabea@gmail.com">
                 <Mail size={16} />
                 Reach Out via Email

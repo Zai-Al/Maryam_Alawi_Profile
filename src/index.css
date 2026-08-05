@@ -457,11 +457,9 @@ h2 {
 
 .reachout-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   gap: 0.7rem;
-  max-width: 760px;
-  margin: 0 auto;
 }
 
 .reachout-item {
@@ -484,6 +482,17 @@ h2 {
 
 .reachout-item:hover {
   background: var(--brand-soft);
+}
+
+.phone-item {
+  border-color: rgba(19, 111, 74, 0.25);
+  background: linear-gradient(180deg, #e8f7ef, #d8f2e4);
+  color: #136f4a;
+}
+
+.phone-item:hover {
+  background: linear-gradient(180deg, #d4efdf, #c3e9d3);
+  color: #0f5c3d;
 }
 
 .linkedin-line a {
