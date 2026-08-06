@@ -485,14 +485,15 @@ h2 {
 }
 
 .phone-item {
-  border-color: rgba(19, 111, 74, 0.25);
-  background: linear-gradient(180deg, #e8f7ef, #d8f2e4);
-  color: #136f4a;
+  border-color: rgba(187, 122, 53, 0.32);
+  background: linear-gradient(180deg, #f6eee2, #efe2d0);
+  color: #bb7a35;
 }
 
 .phone-item:hover {
-  background: linear-gradient(180deg, #d4efdf, #c3e9d3);
-  color: #0f5c3d;
+  background: linear-gradient(180deg, #edddc8, #e4d1b8);
+  color: #9a6126;
+  border-color: rgba(154, 97, 38, 0.44);
 }
 
 .linkedin-line a {
