@@ -7,11 +7,46 @@ import {
   Mail,
   MessageCircle,
   Phone,
+  RefreshCcw,
   Sparkles,
   Trophy,
+  Target,
+  TrendingUp,
+  Layers3,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
-import profileImage from './profile_img.png'
+import profileImage from './profile_img.jpg'
+
+function useCountUp(target, shouldRun, duration = 1100) {
+  const [value, setValue] = useState(0)
+
+  useEffect(() => {
+    if (!shouldRun) return undefined
+
+    let startTime = 0
+    let frameId = 0
+
+    const step = (time) => {
+      if (!startTime) startTime = time
+      const elapsed = time - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setValue(target * eased)
+
+      if (progress < 1) {
+        frameId = window.requestAnimationFrame(step)
+      } else {
+        setValue(target)
+      }
+    }
+
+    frameId = window.requestAnimationFrame(step)
+
+    return () => window.cancelAnimationFrame(frameId)
+  }, [shouldRun, target, duration])
+
+  return value
+}
 
 function LinkedInIcon({ size = 16 }) {
   return (
@@ -64,43 +99,72 @@ function App() {
     [],
   )
 
-  const businessImpactCards = useMemo(
+  const salesCards = useMemo(
     () => [
       {
-        title: 'Fiber Broadband Sales',
-        value: '116% of H1 2026 target',
-        details: ['90 Fiber Broadband lines in 7 months', 'Exceeded Total Contract Value of BD42,000'],
+        icon: Target,
+        label: 'Fiber Broadband Sales',
+        stat: 116,
+        suffix: '%',
+        helper: 'H1 2026 target achievement',
+        note: '90 Fiber Broadband lines in 7 months · Exceeded Total Contract Value of BD42,000',
       },
       {
-        title: 'Other Products Performance',
-        value: '208.71% of 2026 full-year target',
-        details: [
-          'Other Products cover everything outside Fiber Broadband, Mobile Postpaid, Mobile Broadband, UC, and Devices.',
-        ],
+        icon: TrendingUp,
+        label: 'Other Products',
+        stat: 208.71,
+        suffix: '%',
+        helper: '2026 full-year target achievement',
+        note: 'Across all other products outside Fiber Broadband, Mobile Postpaid, Mobile Broadband, UC, and Devices.',
+      },
+    ],
+    [],
+  )
+
+  const trackRecordCards = useMemo(
+    () => [
+      {
+        icon: RefreshCcw,
+        label: '2024 Achievement',
+        stat: 129,
+        suffix: '%',
+        helper: '2024',
+        note: 'Achieved 129% in target.',
       },
       {
-        title: 'Historical Target Delivery',
-        value: '129% in 2024 | 120% in 2025',
-        details: ['Exceeded UC target by 156% in 2025.'],
+        icon: RefreshCcw,
+        label: '2025 Achievement',
+        stat: 120,
+        suffix: '%',
+        helper: '2025',
+        note: 'Achieved 120% in target.',
       },
       {
-        title: 'Product Coverage',
-        value: 'Wide product portfolio ownership',
-        details: [
-          'Fiber Broadband',
-          'Mobile Broadband',
-          'Mobile Postpaid',
-          'UC (Unified Communication as a Service)',
-          'M2M',
-          'Vehicle Tracking',
-          'Domain',
-          'Emails',
-          'Devices',
-          'Dedicated Internet Access',
-          'MPLS',
-          'SD-WAN',
-        ],
+        icon: RefreshCcw,
+        label: 'UC Target',
+        stat: 156,
+        suffix: '%',
+        helper: '2025',
+        note: 'Exceeded 156% of UC target in 2025.',
       },
+    ],
+    [],
+  )
+
+  const productCoverage = useMemo(
+    () => [
+      'Fiber Broadband',
+      'Mobile Broadband',
+      'Mobile Postpaid',
+      'UC (Unified Communication as a Service)',
+      'M2M',
+      'Vehicle Tracking',
+      'Domain',
+      'Emails',
+      'Devices',
+      'Dedicated Internet Access',
+      'MPLS',
+      'SD-WAN',
     ],
     [],
   )
@@ -324,30 +388,40 @@ function App() {
         </section>
 
         {showBusinessImpact && (
-          <section className="panel" id="business-impact">
-            <div className="section-title">
-              <BriefcaseBusiness size={18} />
-              <h2>Business Impact</h2>
-            </div>
-            <div className="impact-grid">
-              {businessImpactCards.map((card, index) => (
-                <motion.article
-                  key={card.title}
-                  className="impact-card"
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.55, delay: index * 0.08 }}
-                >
-                  <h3>{card.title}</h3>
-                  <p className="impact-value">{card.value}</p>
-                  <ul className="impact-points">
-                    {card.details.map((detail) => (
-                      <li key={detail}>{detail}</li>
-                    ))}
-                  </ul>
-                </motion.article>
+          <section className="panel stats-panel" id="business-impact">
+            <p className="section-kicker">BY THE NUMBERS</p>
+            <h2>What the results actually moved.</h2>
+            <p className="section-intro">
+              A concise, animated snapshot of Maryam's commercial results and the product range she works across.
+            </p>
+            <div className="sales-grid">
+              {salesCards.map((card, index) => (
+                <BusinessImpactCard key={card.label} card={card} index={index} />
               ))}
+            </div>
+            <div className="track-record-block">
+              <div className="section-title track-record-title">
+                <RefreshCcw size={18} />
+                <h3>Track Record</h3>
+              </div>
+              <div className="track-record-grid">
+                {trackRecordCards.map((card, index) => (
+                  <BusinessImpactCard key={card.label} card={card} index={index} compact />
+                ))}
+              </div>
+            </div>
+            <div className="coverage-panel">
+              <div className="section-title coverage-title">
+                <Layers3 size={18} />
+                <h3>Product Coverage</h3>
+              </div>
+              <div className="chips chips-compact">
+                {productCoverage.map((product) => (
+                  <motion.span key={product} whileHover={{ scale: 1.03 }}>
+                    {product}
+                  </motion.span>
+                ))}
+              </div>
             </div>
           </section>
         )}
@@ -451,6 +525,45 @@ function App() {
         <p>Copyright © {new Date().getFullYear()} Maryam Sayed Husain Alawi. All rights reserved.</p>
       </footer>
     </div>
+  )
+}
+
+function BusinessImpactCard({ card, index, compact = false }) {
+  const [isVisible, setIsVisible] = useState(false)
+  const primaryValue = useCountUp(card.stat, isVisible)
+  const primaryDisplay = card.suffix === '%' ? primaryValue.toFixed(card.stat % 1 === 0 ? 0 : 2) : Math.round(primaryValue)
+
+  return (
+    <motion.article
+      className={`impact-card stat-card${compact ? ' stat-card-compact' : ''}`}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.55, delay: index * 0.08 }}
+      onViewportEnter={() => setIsVisible(true)}
+    >
+      <div className="stat-icon-wrap" aria-hidden="true">
+        <card.icon size={26} />
+      </div>
+      <p className="stat-label">{card.label}</p>
+      {compact ? (
+        <div className="stat-compact-value">
+          <div className="stat-main">
+            <span className="stat-value">{primaryDisplay}{card.suffix}</span>
+          </div>
+          <span className="stat-year-chip">{card.helper}</span>
+        </div>
+      ) : (
+        <div className="stat-row">
+          <div className="stat-main">
+            <span className="stat-value">{primaryDisplay}{card.suffix}</span>
+          </div>
+          <span className="stat-year-chip">{card.helper}</span>
+        </div>
+      )}
+      {!compact ? <p className="stat-helper">{card.helper}</p> : null}
+      <p className="stat-note">{card.note}</p>
+    </motion.article>
   )
 }
 
