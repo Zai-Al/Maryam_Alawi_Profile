@@ -62,6 +62,7 @@ function LinkedInIcon({ size = 16 }) {
 function App() {
   const [activeSection, setActiveSection] = useState('top')
   const [progress, setProgress] = useState(0)
+  const [isNarrowViewport, setIsNarrowViewport] = useState(false)
   const showBusinessImpact = true
 
   const navItems = useMemo(
@@ -209,6 +210,26 @@ function App() {
     ],
     [],
   )
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 900px)')
+    const updateViewport = () => setIsNarrowViewport(mediaQuery.matches)
+    updateViewport()
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', updateViewport)
+    } else {
+      mediaQuery.addListener(updateViewport)
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', updateViewport)
+      } else {
+        mediaQuery.removeListener(updateViewport)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const sectionIds = [
@@ -394,9 +415,12 @@ function App() {
             <p className="section-intro">
               A concise, animated snapshot of Maryam's commercial results and the product range she works across.
             </p>
-            <div className="sales-grid">
+            <div
+              className="sales-grid"
+              style={isNarrowViewport ? { gridTemplateColumns: '1fr', gap: '0.72rem' } : undefined}
+            >
               {salesCards.map((card, index) => (
-                <BusinessImpactCard key={card.label} card={card} index={index} />
+                <BusinessImpactCard key={card.label} card={card} index={index} forceNarrow={isNarrowViewport} />
               ))}
             </div>
             <div className="track-record-block">
@@ -404,9 +428,19 @@ function App() {
                 <RefreshCcw size={18} />
                 <h3>Track Record</h3>
               </div>
-              <div className="track-record-grid">
+              <div
+                className="track-record-grid"
+                style={isNarrowViewport ? { gridTemplateColumns: '1fr', gap: '0.72rem' } : undefined}
+              >
                 {trackRecordCards.map((card, index) => (
-                  <BusinessImpactCard key={card.label} card={card} index={index} compact trackRecord />
+                  <BusinessImpactCard
+                    key={card.label}
+                    card={card}
+                    index={index}
+                    compact
+                    trackRecord
+                    forceNarrow={isNarrowViewport}
+                  />
                 ))}
               </div>
             </div>
@@ -528,7 +562,7 @@ function App() {
   )
 }
 
-function BusinessImpactCard({ card, index, compact = false, trackRecord = false }) {
+function BusinessImpactCard({ card, index, compact = false, trackRecord = false, forceNarrow = false }) {
   const [isVisible, setIsVisible] = useState(false)
   const primaryValue = useCountUp(card.stat, isVisible)
   const primaryDisplay = card.suffix === '%' ? primaryValue.toFixed(card.stat % 1 === 0 ? 0 : 2) : Math.round(primaryValue)
@@ -536,6 +570,14 @@ function BusinessImpactCard({ card, index, compact = false, trackRecord = false 
   return (
     <motion.article
       className={`impact-card stat-card${compact ? ' stat-card-compact' : ''}${trackRecord ? ' stat-card-track' : ''}`}
+      style={
+        forceNarrow
+          ? {
+              gridTemplateRows: 'auto auto auto auto auto',
+              minHeight: 'auto',
+            }
+          : undefined
+      }
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -545,12 +587,25 @@ function BusinessImpactCard({ card, index, compact = false, trackRecord = false 
       <div className="stat-icon-wrap" aria-hidden="true">
         <card.icon size={26} />
       </div>
-      <p className="stat-label">{card.label}</p>
+      <p
+        className="stat-label"
+        style={forceNarrow ? { minHeight: '0', marginBottom: '0.15rem', lineHeight: 1.32 } : undefined}
+      >
+        {card.label}
+      </p>
       {trackRecord ? (
         <div className="stat-track-layout">
-          <div className="stat-track-number-row">
+          <div
+            className="stat-track-number-row"
+            style={forceNarrow ? { display: 'grid', gridTemplateRows: 'auto auto', gap: '0.5rem' } : undefined}
+          >
             <span className="stat-value">{primaryDisplay}{card.suffix}</span>
-            <span className="stat-year-chip">{card.helper}</span>
+            <span
+              className="stat-year-chip"
+              style={forceNarrow ? { width: '100%', minHeight: '0', textAlign: 'left' } : undefined}
+            >
+              {card.helper}
+            </span>
           </div>
           <p className="stat-note stat-note-track">{card.note}</p>
         </div>
@@ -559,14 +614,27 @@ function BusinessImpactCard({ card, index, compact = false, trackRecord = false 
           <div className="stat-main">
             <span className="stat-value">{primaryDisplay}{card.suffix}</span>
           </div>
-          <span className="stat-year-chip">{card.helper}</span>
+          <span
+            className="stat-year-chip"
+            style={forceNarrow ? { width: '100%', minHeight: '0', textAlign: 'left' } : undefined}
+          >
+            {card.helper}
+          </span>
         </div>
       ) : (
-        <div className="stat-row">
+        <div
+          className="stat-row"
+          style={forceNarrow ? { display: 'grid', gridTemplateRows: 'auto auto', gap: '0.5rem' } : undefined}
+        >
           <div className="stat-main">
             <span className="stat-value">{primaryDisplay}{card.suffix}</span>
           </div>
-          <span className="stat-year-chip">{card.helper}</span>
+          <span
+            className="stat-year-chip"
+            style={forceNarrow ? { width: '100%', minHeight: '0', textAlign: 'left' } : undefined}
+          >
+            {card.helper}
+          </span>
         </div>
       )}
       {!compact ? <p className="stat-helper">{card.helper}</p> : null}
