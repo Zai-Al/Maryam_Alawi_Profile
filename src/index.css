@@ -802,7 +802,22 @@ footer p {
   .track-record-grid,
   .stats-grid,
   .profile-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+  }
+
+  .stats-panel {
+    padding: 1.15rem;
+  }
+
+  .sales-grid .stat-card,
+  .track-record-grid .stat-card-track {
+    grid-template-rows: auto auto auto auto auto;
+    min-height: auto;
+  }
+
+  .sales-grid .stat-main,
+  .track-record-grid .stat-main {
+    min-height: 0;
   }
 
   .stat-icon-wrap {
@@ -816,6 +831,29 @@ footer p {
 }
 
 @media (max-width: 600px) {
+  .site-shell {
+    width: calc(100% - 0.7rem);
+  }
+
+  .panel,
+  .hero,
+  footer {
+    border-radius: 24px;
+  }
+
+  .impact-card {
+    padding: 1rem 0.95rem 0.9rem;
+  }
+
+  .stat-label {
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+  }
+
+  .stat-value {
+    font-size: clamp(2rem, 13.5vw, 2.8rem);
+  }
+
   .stat-track-number-row,
   .stat-row {
     flex-direction: column;
@@ -829,5 +867,14 @@ footer p {
     white-space: normal;
     line-height: 1.25;
     text-align: left;
+    min-height: 0;
+    padding: 0.42rem 0.58rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+  }
+
+  .stat-note {
+    font-size: 0.84rem;
+    line-height: 1.42;
   }
 }
