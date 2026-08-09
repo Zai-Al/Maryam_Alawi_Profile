@@ -309,6 +309,23 @@ h2 {
   color: var(--brand);
 }
 
+.impact-value {
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.impact-points {
+  margin: 0.85rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+  display: grid;
+  gap: 0.35rem;
+}
+
+.impact-points li {
+  margin: 0;
+}
+
 .impact-card span {
   display: inline-block;
   margin-top: 0.38rem;

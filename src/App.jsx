@@ -27,7 +27,7 @@ function LinkedInIcon({ size = 16 }) {
 function App() {
   const [activeSection, setActiveSection] = useState('top')
   const [progress, setProgress] = useState(0)
-  const showBusinessImpact = false
+  const showBusinessImpact = true
 
   const navItems = useMemo(
     () => {
@@ -67,24 +67,39 @@ function App() {
   const businessImpactCards = useMemo(
     () => [
       {
-        title: 'SME Portfolio Growth',
-        note:
-          'Placeholder content for verified SME portfolio size, account growth, renewal outcomes, and upselling results.',
+        title: 'Fiber Broadband Sales',
+        value: '116% of H1 2026 target',
+        details: ['90 Fiber Broadband lines in 7 months', 'Exceeded Total Contract Value of BD42,000'],
       },
       {
-        title: 'Sales Performance',
-        note:
-          'Placeholder content for verified sales targets, target achievement rates, rankings, and revenue contribution.',
+        title: 'Other Products Performance',
+        value: '208.71% of 2026 full-year target',
+        details: [
+          'Other Products cover everything outside Fiber Broadband, Mobile Postpaid, Mobile Broadband, UC, and Devices.',
+        ],
       },
       {
-        title: 'Operations Leadership',
-        note:
-          'Placeholder content for verified team size, SLA gains, productivity improvements, and development outcomes.',
+        title: 'Historical Target Delivery',
+        value: '129% in 2024 | 120% in 2025',
+        details: ['Exceeded UC target by 156% in 2025.'],
       },
       {
-        title: 'Customer Experience',
-        note:
-          'Placeholder content for verified retention, complaint resolution, escalation management, and service recovery.',
+        title: 'Product Coverage',
+        value: 'Wide product portfolio ownership',
+        details: [
+          'Fiber Broadband',
+          'Mobile Broadband',
+          'Mobile Postpaid',
+          'UC (Unified Communication as a Service)',
+          'M2M',
+          'Vehicle Tracking',
+          'Domain',
+          'Emails',
+          'Devices',
+          'Dedicated Internet Access',
+          'MPLS',
+          'SD-WAN',
+        ],
       },
     ],
     [],
@@ -325,9 +340,12 @@ function App() {
                   transition={{ duration: 0.55, delay: index * 0.08 }}
                 >
                   <h3>{card.title}</h3>
-                  <p>{card.note}</p>
-                  {/* TODO: Replace with Maryam's verified result */}
-                  {/* TODO: Replace with Maryam's verified result */}
+                  <p className="impact-value">{card.value}</p>
+                  <ul className="impact-points">
+                    {card.details.map((detail) => (
+                      <li key={detail}>{detail}</li>
+                    ))}
+                  </ul>
                 </motion.article>
               ))}
             </div>
