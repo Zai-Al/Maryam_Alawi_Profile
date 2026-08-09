@@ -344,6 +344,11 @@ h2 {
   min-height: 100%;
 }
 
+.sales-grid .stat-card {
+  grid-template-rows: auto minmax(4.2rem, auto) minmax(8.1rem, auto) minmax(4.6rem, auto) minmax(9.8rem, auto);
+  align-content: start;
+}
+
 .stat-card-compact {
   padding: 0.8rem 0.82rem 0.78rem;
   gap: 0.36rem;
@@ -352,6 +357,11 @@ h2 {
 
 .stat-card-track {
   min-height: 15rem;
+}
+
+.track-record-grid .stat-card-track {
+  grid-template-rows: auto minmax(6rem, auto) minmax(10.8rem, auto);
+  align-content: start;
 }
 
 .stat-icon-wrap {
@@ -371,6 +381,11 @@ h2 {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--brand-soft);
+}
+
+.sales-grid .stat-label,
+.track-record-grid .stat-label {
+  line-height: 1.35;
 }
 
 .stat-row {
@@ -400,9 +415,31 @@ h2 {
   gap: 0.7rem;
 }
 
+.sales-grid .stat-row,
+.track-record-grid .stat-track-number-row {
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-items: start;
+  align-items: start;
+  gap: 0.55rem;
+}
+
 .stat-main {
   display: flex;
   align-items: baseline;
+}
+
+.sales-grid .stat-main,
+.track-record-grid .stat-main {
+  min-height: 4.6rem;
+  align-items: flex-end;
+}
+
+.stat-value {
+  font-family: var(--heading);
+  font-size: clamp(2.4rem, 7vw, 5.1rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
 }
 
 .stat-comparison {
@@ -438,6 +475,16 @@ h2 {
   font-weight: 700;
 }
 
+.sales-grid .stat-year-chip,
+.track-record-grid .stat-year-chip {
+  width: 100%;
+  justify-content: flex-start;
+  white-space: normal;
+  text-align: left;
+  line-height: 1.25;
+  min-height: 3.95rem;
+}
+
 .stat-year-chip-secondary {
   background: rgba(34, 59, 93, 0.06);
 }
@@ -447,6 +494,11 @@ h2 {
   color: var(--muted);
   font-size: 0.93rem;
   line-height: 1.55;
+}
+
+.sales-grid .stat-note,
+.track-record-grid .stat-note {
+  line-height: 1.48;
 }
 
 .stat-card-compact .stat-icon-wrap {
@@ -746,6 +798,8 @@ footer p {
   }
 
   .impact-grid,
+  .sales-grid,
+  .track-record-grid,
   .stats-grid,
   .profile-grid {
     grid-template-columns: 1fr;
@@ -758,5 +812,22 @@ footer p {
 
   .stat-value {
     font-size: clamp(2.25rem, 11vw, 3.25rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .stat-track-number-row,
+  .stat-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+
+  .stat-year-chip {
+    width: 100%;
+    justify-content: flex-start;
+    white-space: normal;
+    line-height: 1.25;
+    text-align: left;
   }
 }
