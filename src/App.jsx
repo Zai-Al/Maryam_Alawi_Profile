@@ -129,7 +129,7 @@ function App() {
         stat: 129,
         suffix: '%',
         helper: '2024',
-        note: 'Achieved 129% in target.',
+        note: 'Achieved in target',
       },
       {
         icon: RefreshCcw,
@@ -137,7 +137,7 @@ function App() {
         stat: 120,
         suffix: '%',
         helper: '2025',
-        note: 'Achieved 120% in target.',
+        note: 'Achieved in target',
       },
       {
         icon: RefreshCcw,
@@ -145,7 +145,7 @@ function App() {
         stat: 156,
         suffix: '%',
         helper: '2025',
-        note: 'Exceeded 156% of UC target in 2025.',
+        note: 'Exceeded UC target',
       },
     ],
     [],
@@ -406,7 +406,7 @@ function App() {
               </div>
               <div className="track-record-grid">
                 {trackRecordCards.map((card, index) => (
-                  <BusinessImpactCard key={card.label} card={card} index={index} compact />
+                  <BusinessImpactCard key={card.label} card={card} index={index} compact trackRecord />
                 ))}
               </div>
             </div>
@@ -528,14 +528,14 @@ function App() {
   )
 }
 
-function BusinessImpactCard({ card, index, compact = false }) {
+function BusinessImpactCard({ card, index, compact = false, trackRecord = false }) {
   const [isVisible, setIsVisible] = useState(false)
   const primaryValue = useCountUp(card.stat, isVisible)
   const primaryDisplay = card.suffix === '%' ? primaryValue.toFixed(card.stat % 1 === 0 ? 0 : 2) : Math.round(primaryValue)
 
   return (
     <motion.article
-      className={`impact-card stat-card${compact ? ' stat-card-compact' : ''}`}
+      className={`impact-card stat-card${compact ? ' stat-card-compact' : ''}${trackRecord ? ' stat-card-track' : ''}`}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -546,7 +546,15 @@ function BusinessImpactCard({ card, index, compact = false }) {
         <card.icon size={26} />
       </div>
       <p className="stat-label">{card.label}</p>
-      {compact ? (
+      {trackRecord ? (
+        <div className="stat-track-layout">
+          <div className="stat-track-number-row">
+            <span className="stat-value">{primaryDisplay}{card.suffix}</span>
+            <span className="stat-year-chip">{card.helper}</span>
+          </div>
+          <p className="stat-note stat-note-track">{card.note}</p>
+        </div>
+      ) : compact ? (
         <div className="stat-compact-value">
           <div className="stat-main">
             <span className="stat-value">{primaryDisplay}{card.suffix}</span>
@@ -562,7 +570,7 @@ function BusinessImpactCard({ card, index, compact = false }) {
         </div>
       )}
       {!compact ? <p className="stat-helper">{card.helper}</p> : null}
-      <p className="stat-note">{card.note}</p>
+      {!trackRecord ? <p className="stat-note">{card.note}</p> : null}
     </motion.article>
   )
 }
